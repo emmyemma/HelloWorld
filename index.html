@@ -5,26 +5,28 @@
 <div data-lightning-out="true"></div>
 
 <script>
+    import {OAuth} from 'forcejs';
     const appName= 'c:HelloWorldDependency';
     const componentName = 'c:helloWorld';
     const lightningEndpoint = 'https://creative-otter-tmmhku-dev-ed.trailblaze.my.site.com';
     const targetElement = document.querySelector("[data-lightning-out]");
     const componentAttributes = {};
-
-    $Lightning.use(
-        appName,
-        function () {
-            $Lightning.createComponent(
-                componentName,
-                componentAttributes,
-                targetElement,
-                function(cmp){
-                    console.log('lightning component created');
-                }
-            );
-        },
-        lightningEndpoint
-    );
+    
+    let oauth = OAuth.createInstance("6Cel800DHs000000QiMo888Hs000000U15A104MbxvxBdfLZWKx9kl4JrD9c6W5y2fPbAHwSBvSaeF0184WBeYi6VaSH6We9SSKKOkvct73",
+                                "https://login.salesforce.com", 
+                                "https://github.com/emmyemma/oauth2/github/callback");
+    oauth.login().then(oauthResult => {
+    console.log(oauthResult);
+    renderLightningOutComponent(oauthResult);
+    });
+    
+    let renderLightningOutComponent = (oauthResult) => {
+    const token = oauthResult.accessToken;
+    const lightningendpointuri = "https://creative-otter-tmmhku-dev-ed.trailblaze.lightning.force.com";
+    $Lightning.use(appName, () => {
+        $Lightning.createComponent(componentName, {}, targetElement, (cmp) => { console.log('component created') });},
+                   lightningendpointuri, token);
+  
 </script>
 
 </html>
