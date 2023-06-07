@@ -5,21 +5,26 @@
 <div data-lightning-out="true"></div>
 
 <script>
-    OAuth = require('forcejs')
     const appName= 'c:HelloWorldDependency';
     const componentName = 'c:helloWorld';
     const lightningEndpoint = 'https://creative-otter-tmmhku-dev-ed.trailblaze.my.site.com';
     const targetElement = document.querySelector("[data-lightning-out]");
     const componentAttributes = {};
     
-    let oauth = OAuth.createInstance("",
-                                "https://login.salesforce.com", 
-                                "https://github.com/emmyemma/oauth2/github/callback");
-    oauth.login().then(oauthResult => {
-    console.log(oauthResult);
-    renderLightningOutComponent(oauthResult);
-    });
+    function getAuthToken() {
+        var url = 'https://login.salesforce.com/oauth2/callback?grant_type=client_credentials'
+        var post = {
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization' : 'client_id:3MVG9HB6vm3GZZR9sIPMXbCsv33sKF.5BA6v2f5HkTAayVxntAHz5xOiWaIl.aZPR5hEFQ0Uq9qLxtCPrsW4U, client_secret:887110D46348954A2257D7802C057CC9419ECFE4E8F18EFF0358251EEC8C816B'
+            },
+            'redirect': 'follow'
+        };
+        return UrlFetchApp.fetch(url, post);
+    }
     
+    var token = getAuthToken();
     let renderLightningOutComponent = (oauthResult) => {
     const token = oauthResult.accessToken;
     const lightningendpointuri = "https://creative-otter-tmmhku-dev-ed.trailblaze.lightning.force.com";
