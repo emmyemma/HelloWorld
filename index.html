@@ -11,7 +11,7 @@
     const authorizationEndpoint = 'https://login.salesforce.com/services/oauth2/authorize';
     const scope = 'openid';
     const responseType = 'code';
-    const authorizationUrl = `${authorizationEndpoint}?response_type=${responseType}&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    const authorizationUrl = `${authorizationEndpoint}?response_type=${responseType}&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
     window.location.href = authorizationUrl;
     
     const appName= 'c:HelloWorldDependency';
