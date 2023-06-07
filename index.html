@@ -5,29 +5,44 @@
 <div data-lightning-out="true"></div>
 
 <script>
+    
+    const clientId = '3MVG9HB6vm3GZZR9sIPMXbCsv33sKF.5BA6v2f5HkTAayVxntAHz5xOiWaIl.aZPR5hEFQ0Uq9qLxtCPrsW4U';
+    const redirectUri = 'https://creative-otter-tmmhku-dev-ed.trailblaze.my.site.com';
+    const authorizationEndpoint = 'https://login.salesforce.com/services/oauth2/authorize';
+    const scope = 'openid, profile, accounts.read'
+    const authorizationUrl = `${authorizationEndpoint}?response_type=${responseType}&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    window.location.href = authorizationUrl;
+    
     const appName= 'c:HelloWorldDependency';
     const componentName = 'c:helloWorld';
     const lightningEndpoint = 'https://creative-otter-tmmhku-dev-ed.trailblaze.my.site.com';
     const targetElement = document.querySelector("[data-lightning-out]");
     const componentAttributes = {};
-    function getAuthToken() {
-        var url = 'https://login.salesforce.com/oauth2/callback?grant_type=client_credentials'
-        var post = {
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Access-Control-Allow-Credentials' : 'true',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-                'Authorization' : 'client_id:3MVG9HB6vm3GZZR9sIPMXbCsv33sKF.5BA6v2f5HkTAayVxntAHz5xOiWaIl.aZPR5hEFQ0Uq9qLxtCPrsW4U, client_secret:887110D46348954A2257D7802C057CC9419ECFE4E8F18EFF0358251EEC8C816B'
-            },
-            'redirect': 'follow'
-        };
-        return fetch(url, post);
-    }
+  
+    const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token';
+    const grantType = 'authorization_code';
+    const code = 'AUTHORIZATION_CODE'; // The code received after successful authorization
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `grant_type=${grantType}&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(code)}`
+    };
+    var token = "";
+    fetch(tokenEndpoint, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response data
+        token = data.access_token;
+        console.log('OAuth token:', data.access_token);
+      })
+      .catch(error => {
+        // Handle any errors
+        console.error('Error:', error);
+      });
     
-    var token = getAuthToken();
     let renderLightningOutComponent = (oauthResult) => {
     const token = oauthResult.accessToken;
     const lightningendpointuri = "https://creative-otter-tmmhku-dev-ed.trailblaze.lightning.force.com";
