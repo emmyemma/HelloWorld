@@ -32,7 +32,7 @@
       body: `grant_type=${grantType}&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(code)}`
     };
     var token = "";
-    <!-- fetch(tokenEndpoint, requestOptions)
+    fetch(tokenEndpoint, requestOptions)
       .then(response => response.json())
       .then(data => {
         // Handle the response data
@@ -42,7 +42,7 @@
       .catch(error => {
         // Handle any errors
         console.error('Error:', error);
-      }); -->
+      });
    
     const token = oauthResult.accessToken;
     const lightningendpointuri = "https://creative-otter-tmmhku-dev-ed.trailblaze.lightning.force.com";
