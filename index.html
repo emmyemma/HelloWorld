@@ -44,7 +44,6 @@
         console.error('Error:', error);
       });
    
-    const token = oauthResult.accessToken;
     const lightningendpointuri = "https://creative-otter-tmmhku-dev-ed.trailblaze.lightning.force.com";
     $Lightning.use(appName, () => {
         $Lightning.createComponent(componentName, {}, targetElement, (cmp) => { console.log('component created') });},
